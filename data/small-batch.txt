@@ -1,0 +1,22 @@
+== NPU
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |             pp1 |          8.71 ± 0.01 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |             pp2 |         16.03 ± 0.03 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |             pp4 |         20.40 ± 0.12 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |             pp8 |         16.83 ± 0.03 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |            pp16 |         30.89 ± 0.33 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |            pp32 |         51.85 ± 0.26 |
+== CPU t4
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |             pp1 |          9.49 ± 0.06 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |             pp2 |         13.22 ± 0.01 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |             pp4 |         33.72 ± 0.04 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |             pp8 |         39.40 ± 0.12 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |            pp16 |         53.88 ± 0.02 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |            pp32 |         55.02 ± 0.03 |
+== GPU
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |             pp1 |          8.59 ± 0.34 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |             pp2 |          9.79 ± 0.12 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |             pp4 |         19.33 ± 0.22 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |             pp8 |         35.73 ± 0.90 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |            pp16 |         54.27 ± 0.72 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |            pp32 |         67.98 ± 0.63 |
+DONE

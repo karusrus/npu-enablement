@@ -1,0 +1,51 @@
+0.00.055.949 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.02.986.545 I cmn          init: llama threadpool init, n_threads = 4
+0.03.165.541 I common_speculative_init_result: loading draft model 'models/Qwen3.5-0.8B-Q4_0.gguf'
+0.04.280.656 I speculative decoding will use checkpoints (context does not support partial sequence removal)
+
+
+<|im_start|>user
+Write a short friendly email to a client explaining that the project delivery moves by one week because of extra testing.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+Subject: Quick update on your project timeline
+
+Hi [Client Name],
+
+I hope you're having a great week!
+
+I'm writing to share a quick update regarding the delivery schedule for your project. Due to some unexpected findings during our testing phase, we've decided to add an extra week to ensure the final product is as stable and reliable as possible.
+
+This means the launch will now be scheduled for **[New Date]** instead of the original **[Original Date]**.
+
+We believe this small delay is a small price to pay for a smoother experience for you and your users. We're committed to getting this right for you.
+
+Please let
+
+0.28.438.482 I encoded   34 tokens in    0.798 seconds, speed:   42.624 t/s
+0.28.438.483 I decoded  130 tokens in   23.360 seconds, speed:    5.565 t/s
+0.28.438.484 I 
+0.28.438.485 I n_draft   = 4
+0.28.438.485 I n_predict = 130
+0.28.438.486 I n_drafted = 92
+0.28.438.486 I n_accept  = 92
+0.28.438.487 I accept    = 100.000%
+0.28.438.487 I 
+0.28.438.488 I draft:
+
+0.28.438.505 I 
+0.28.438.505 I target:
+
+0.28.438.506 I common_perf_print:    sampling time =       0.52 ms
+0.28.438.507 I common_perf_print:    samplers time =       0.27 ms /     2 tokens
+0.28.438.508 I common_perf_print:        load time =    1704.45 ms
+0.28.438.510 I common_perf_print: prompt eval time =   16790.72 ms /   305 tokens (   55.05 ms per token,    18.16 tokens per second)
+0.28.438.512 I common_perf_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
+0.28.438.512 I common_perf_print:       total time =   25273.07 ms /   306 tokens
+0.28.438.514 I common_perf_print: unaccounted time =    8481.82 ms /  33.6 %      (total - sampling - prompt eval - eval) / (total)
+0.28.438.514 I common_perf_print:    graphs reused =         16
+
+

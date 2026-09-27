@@ -1,0 +1,26 @@
+0.00.070.423 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.00.076.223 I llama_completion: llama backend init
+0.00.076.275 I llama_completion: load the model and apply lora adapter, if any
+0.03.569.912 I cmn          init: llama threadpool init, n_threads = 4
+0.03.843.227 I 
+0.03.843.329 I system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | REPACK = 1 | 
+0.03.843.329 I 
+0.03.843.407 I sampler seed: 1090566410
+0.03.843.423 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 40, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.03.843.427 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+0.03.843.428 I generate: n_ctx = 1024, n_batch = 2048, n_predict = 40, n_keep = 0
+0.03.843.429 I 
+The capital of France is Paris. The capital of Germany is Berlin. The capital of Italy is Rome. The capital of Spain is Madrid. The capital of the United Kingdom is London. The capital of the United States is Washington, D.C. The capital of
+
+0.08.528.202 I common_perf_print:    sampling time =      11.14 ms
+0.08.528.204 I common_perf_print:    samplers time =       5.47 ms /    52 tokens
+0.08.528.205 I common_perf_print:        load time =    2913.17 ms
+0.08.528.207 I common_perf_print: prompt eval time =     315.89 ms /    12 tokens (   26.32 ms per token,    37.99 tokens per second)
+0.08.528.208 I common_perf_print:        eval time =    4355.98 ms /    39 runs   (  111.69 ms per token,     8.95 tokens per second)
+0.08.528.209 I common_perf_print:       total time =    4684.98 ms /    51 tokens
+0.08.528.210 I common_perf_print: unaccounted time =       1.96 ms /   0.0 %      (total - sampling - prompt eval - eval) / (total)
+0.08.528.211 I common_perf_print:    graphs reused =         38

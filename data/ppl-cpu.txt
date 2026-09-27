@@ -1,0 +1,8 @@
+== unsloth Q4_0 CPU
+4.26.149.465 I Final estimate: PPL = 10.3406 +/- 0.40118
+== pure Q4_0 CPU
+4.02.725.604 I Final estimate: PPL = 10.8533 +/- 0.42418
+== pure Q4_0 NPU
+== BF16 CPU (reference)
+76.16.487.485 I Final estimate: PPL = 10.1409 +/- 0.39254
+DONE

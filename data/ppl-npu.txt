@@ -1,0 +1,13 @@
+0.00.065.812 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.00.778.728 W common_get_device_memory_data_impl: device HTP0 did not report memory; --fit will not use it
+0.00.851.808 W common_fit_params: failed to fit params to free device memory: n_gpu_layers already set by user to 99, abort
+0.03.640.173 I cmn          init: llama threadpool init, n_threads = 8
+0.03.799.197 I 
+0.03.799.363 I system_info: n_threads = 8 (n_threads_batch = 8) / 8 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | REPACK = 1 | 
+0.03.799.370 I perplexity: tokenizing the input ..
+0.04.314.447 I perplexity: tokenization took 515.067 ms
+0.04.315.049 I perplexity: calculating perplexity over 20 chunks, n_ctx=512, batch_size=512, n_seq=1
+0.08.966.154 I perplexity: 4.65 seconds per pass - ETA 1.55 minutes
+[1]6.1722,[2]8.9268,[3]9.0159,[4]8.9152,[5]8.9369,[6]9.4045,[7]9.7469,[8]10.5638,[9]11.1608,[10]11.5421,[11]11.4147,[12]11.6043,[13]12.3196,[14]11.7302,[15]11.5651,[16]11.7932,[17]10.9885,[18]11.0175,[19]10.8847,[20]10.8436,
+1.38.216.658 I Final estimate: PPL = 10.8436 +/- 0.42341
+

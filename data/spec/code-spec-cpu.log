@@ -1,0 +1,54 @@
+0.00.066.716 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.03.021.529 I cmn          init: llama threadpool init, n_threads = 4
+0.03.201.334 I common_speculative_init_result: loading draft model 'models/Qwen3.5-0.8B-Q4_0.gguf'
+0.04.281.152 I speculative decoding will use checkpoints (context does not support partial sequence removal)
+
+
+<|im_start|>user
+Write a Python function that checks whether a string is a palindrome, with a short docstring and two examples.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+```python
+def is_palindrome(s: str) -> bool:
+    """
+    Check whether a string is a palindrome.
+
+    A palindrome reads the same forwards and backwards, ignoring case and non-alphanumeric characters.
+
+    Examples:
+        >>> is_palindrome("A man, a plan, a canal: Panama")
+        True
+        >>> is_palindrome("Hello, World!")
+        False
+    """
+    cleaned = ''.join(ch.lower() for ch in s if ch.isalnum())
+    return cleaned == cleaned[::-1]
+```
+
+0.20.280.976 I encoded   34 tokens in    0.787 seconds, speed:   43.205 t/s
+0.20.280.978 I decoded  121 tokens in   15.213 seconds, speed:    7.954 t/s
+0.20.280.978 I 
+0.20.280.979 I n_draft   = 4
+0.20.280.979 I n_predict = 121
+0.20.280.980 I n_drafted = 92
+0.20.280.981 I n_accept  = 92
+0.20.280.981 I accept    = 100.000%
+0.20.280.982 I 
+0.20.280.982 I draft:
+
+0.20.280.998 I 
+0.20.280.999 I target:
+
+0.20.281.000 I common_perf_print:    sampling time =       6.96 ms
+0.20.281.002 I common_perf_print:    samplers time =       3.95 ms /    29 tokens
+0.20.281.003 I common_perf_print:        load time =    1714.87 ms
+0.20.281.004 I common_perf_print: prompt eval time =   10459.76 ms /   211 tokens (   49.57 ms per token,    20.17 tokens per second)
+0.20.281.005 I common_perf_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
+0.20.281.006 I common_perf_print:       total time =   17079.77 ms /   212 tokens
+0.20.281.007 I common_perf_print: unaccounted time =    6613.05 ms /  38.7 %      (total - sampling - prompt eval - eval) / (total)
+0.20.281.007 I common_perf_print:    graphs reused =         20
+
+

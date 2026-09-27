@@ -1,0 +1,9 @@
+== unsloth CPU t8
+| qwen35 4B Q4_0                 |   2.40 GiB |     4.21 B | OpenCL,HTP |   0 | none         |           pp512 |         47.11 ± 0.50 |
+== Llama-3.2-1B-Instruct-Q4_0 GPU
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |  99 | GPUOpenCL    |           pp512 |        307.21 ± 1.44 |
+== Qwen3.5-4B-Q4_0-pure GPU
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |           pp512 |         73.91 ± 0.13 |
+== Qwen3.5-4B-Q4_0 GPU
+| qwen35 4B Q4_0                 |   2.40 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |           pp512 |         76.20 ± 1.71 |
+DONE

@@ -1,0 +1,45 @@
+0.00.055.648 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.00.058.490 I llama_completion: llama backend init
+0.00.058.531 I llama_completion: load the model and apply lora adapter, if any
+0.02.340.699 I cmn          init: llama threadpool init, n_threads = 4
+0.02.525.270 I 
+0.02.525.380 I system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | REPACK = 1 | 
+0.02.525.380 I 
+0.02.525.548 I sampler seed: 3471928287
+0.02.525.571 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 40, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.02.525.576 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+0.02.525.576 I generate: n_ctx = 2048, n_batch = 2048, n_predict = 128, n_keep = 0
+0.02.525.577 I 
+user
+Write a short friendly email to a client explaining that the project delivery moves by one week because of extra testing.
+assistant
+<think>
+
+</think>
+
+Subject: Quick update on your project timeline
+
+Hi [Client Name],
+
+I hope you're having a great week!
+
+I'm writing to share a quick update regarding the delivery schedule for your project. Due to some unexpected findings during our testing phase, we've decided to add an extra week to ensure the final product is as stable and reliable as possible.
+
+This means the launch will now be scheduled for **[New Date]** instead of the original **[Original Date]**.
+
+We believe this small delay is a small price to pay for a smoother experience for you and your users. We're committed to getting this right for you.
+
+
+
+0.16.402.087 I common_perf_print:    sampling time =      35.53 ms
+0.16.402.088 I common_perf_print:    samplers time =      17.76 ms /   162 tokens
+0.16.402.090 I common_perf_print:        load time =    1686.43 ms
+0.16.402.091 I common_perf_print: prompt eval time =     666.90 ms /    34 tokens (   19.61 ms per token,    50.98 tokens per second)
+0.16.402.092 I common_perf_print:        eval time =   13168.49 ms /   127 runs   (  103.69 ms per token,     9.64 tokens per second)
+0.16.402.093 I common_perf_print:       total time =   13876.82 ms /   161 tokens
+0.16.402.094 I common_perf_print: unaccounted time =       5.90 ms /   0.0 %      (total - sampling - prompt eval - eval) / (total)
+0.16.402.095 I common_perf_print:    graphs reused =        126

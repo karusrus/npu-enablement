@@ -1,0 +1,57 @@
+0.00.054.551 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.00.670.023 W common_get_device_memory_data_impl: device HTP0 did not report memory; --fit will not use it
+0.01.359.547 W common_fit_params: failed to fit params to free device memory: n_gpu_layers already set by user to 99, abort
+0.04.074.690 I cmn          init: llama threadpool init, n_threads = 8
+0.04.219.345 I common_speculative_init_result: loading draft model 'models/Qwen3.5-0.8B-Q4_0.gguf'
+0.06.116.717 I speculative decoding will use checkpoints (context does not support partial sequence removal)
+
+
+<|im_start|>user
+Write a Python function that checks whether a string is a palindrome, with a short docstring and two examples.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+```python
+def is_palindrome(s: str) -> bool:
+    """
+    Check if a given string is a palindrome.
+
+    A palindrome reads the same forwards and backwards after ignoring
+    non-alphanumeric characters and case differences.
+
+    Examples:
+        >>> is_palindrome("A man, a plan, a canal: Panama")
+        True
+        >>> is_palindrome("Hello, World!")
+        False
+    """
+    cleaned = ''.join(c.lower() for c in s if c.isalnum())
+    return cleaned == cleaned[::-1]
+```
+
+1.21.190.134 I encoded   34 tokens in    0.316 seconds, speed:  107.492 t/s
+1.21.190.136 I decoded  125 tokens in   74.757 seconds, speed:    1.672 t/s
+1.21.190.137 I 
+1.21.190.137 I n_draft   = 4
+1.21.190.138 I n_predict = 125
+1.21.190.139 I n_drafted = 66
+1.21.190.139 I n_accept  = 66
+1.21.190.140 I accept    = 100.000%
+1.21.190.140 I 
+1.21.190.141 I draft:
+
+1.21.190.158 I 
+1.21.190.159 I target:
+
+1.21.190.161 I common_perf_print:    sampling time =       0.98 ms
+1.21.190.163 I common_perf_print:    samplers time =       0.55 ms /     4 tokens
+1.21.190.164 I common_perf_print:        load time =    2710.83 ms
+1.21.190.165 I common_perf_print: prompt eval time =   62983.08 ms /   581 tokens (  108.40 ms per token,     9.22 tokens per second)
+1.21.190.167 I common_perf_print:        eval time =       0.00 ms /     1 runs   (    0.00 ms per token,      inf tokens per second)
+1.21.190.167 I common_perf_print:       total time =   76970.98 ms /   582 tokens
+1.21.190.168 I common_perf_print: unaccounted time =   13986.92 ms /  18.2 %      (total - sampling - prompt eval - eval) / (total)
+1.21.190.169 I common_perf_print:    graphs reused =         59
+
+

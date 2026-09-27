@@ -1,0 +1,232 @@
+{
+ "execution_summary": {
+  "estimated_inference_time": 620,
+  "estimated_inference_peak_memory": 185888768,
+  "first_load_time": 898583,
+  "first_load_peak_memory": 369991680,
+  "warm_load_time": 132773,
+  "warm_load_peak_memory": 178483200,
+  "compile_time": 0,
+  "compile_peak_memory": 0,
+  "compile_memory_increase_range": [
+   0,
+   0
+  ],
+  "compile_memory_peak_range": [
+   0,
+   0
+  ],
+  "first_load_memory_increase_range": [
+   184985184,
+   191981984
+  ],
+  "first_load_memory_peak_range": [
+   250720256,
+   257717056
+  ],
+  "warm_load_memory_increase_range": [
+   0,
+   1643104
+  ],
+  "warm_load_memory_peak_range": [
+   524288,
+   77477472
+  ],
+  "inference_memory_increase_range": [
+   0,
+   36992
+  ],
+  "inference_memory_peak_range": [
+   28672,
+   75702384
+  ],
+  "all_compile_times": [],
+  "all_first_load_times": [
+   898583
+  ],
+  "all_warm_load_times": [
+   132773
+  ],
+  "all_inference_times": [
+   1159,
+   795,
+   745,
+   723,
+   718,
+   851,
+   723,
+   699,
+   700,
+   697,
+   674,
+   825,
+   647,
+   628,
+   623,
+   641,
+   630,
+   624,
+   629,
+   627,
+   626,
+   636,
+   625,
+   630,
+   622,
+   629,
+   627,
+   633,
+   624,
+   625,
+   622,
+   622,
+   622,
+   623,
+   627,
+   621,
+   635,
+   640,
+   631,
+   636,
+   671,
+   620,
+   626,
+   621,
+   623,
+   623,
+   624,
+   623,
+   626,
+   621,
+   624,
+   623,
+   623,
+   630,
+   624,
+   631,
+   628,
+   627,
+   627,
+   661,
+   675,
+   718,
+   758,
+   690,
+   653,
+   658,
+   630,
+   631,
+   623,
+   840,
+   643,
+   645,
+   643,
+   644,
+   636,
+   672,
+   631,
+   632,
+   622,
+   622,
+   622,
+   623,
+   622,
+   624,
+   631,
+   623,
+   622,
+   623,
+   638,
+   641,
+   659,
+   696,
+   670,
+   673,
+   664,
+   643,
+   654,
+   644,
+   644,
+   645
+  ]
+ },
+ "execution_detail": [
+  {
+   "name": "Input",
+   "type": "Input",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 6793
+  },
+  {
+   "name": "/MatMul",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 256720
+  },
+  {
+   "name": "/MatMul_2",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu_2",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 319869
+  },
+  {
+   "name": "/MatMul_4",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu_4",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 273522
+  },
+  {
+   "name": "/MatMul_6",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu_6",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 257465
+  },
+  {
+   "name": "/MatMul_6_post_reshape",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "Output",
+   "type": "Output",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 3908
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+0.00.093.274 W ggml-hex: forcing ndev to 1 for SoCs archs lower than v75.
+0.00.103.169 I llama_completion: llama backend init
+0.00.103.227 I llama_completion: load the model and apply lora adapter, if any
+0.02.401.712 I cmn          init: llama threadpool init, n_threads = 4
+0.02.586.803 I 
+0.02.586.933 I system_info: n_threads = 4 (n_threads_batch = 4) / 8 | CPU : NEON = 1 | ARM_FMA = 1 | FP16_VA = 1 | MATMUL_INT8 = 1 | DOTPROD = 1 | REPACK = 1 | 
+0.02.586.949 I 
+0.02.587.127 I sampler seed: 2930402427
+0.02.587.145 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 40, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.02.587.150 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+0.02.587.151 I generate: n_ctx = 2048, n_batch = 2048, n_predict = 128, n_keep = 0
+0.02.587.151 I 
+user
+Write a Python function that checks whether a string is a palindrome, with a short docstring and two examples.
+assistant
+<think>
+
+</think>
+
+```python
+def is_palindrome(s: str) -> bool:
+    """
+    Check whether a string is a palindrome.
+
+    A palindrome reads the same forwards and backwards, ignoring case and non-alphanumeric characters.
+
+    Examples:
+        >>> is_palindrome("A man, a plan, a canal: Panama")
+        True
+        >>> is_palindrome("Hello, World!")
+        False
+    """
+    cleaned = ''.join(ch.lower() for ch in s if ch.isalnum())
+    return cleaned == cleaned[::-1]
+``` [end of text]
+
+
+0.15.303.866 I common_perf_print:    sampling time =      30.74 ms
+0.15.303.867 I common_perf_print:    samplers time =      16.23 ms /   152 tokens
+0.15.303.868 I common_perf_print:        load time =    1666.10 ms
+0.15.303.869 I common_perf_print: prompt eval time =     673.33 ms /    34 tokens (   19.80 ms per token,    50.50 tokens per second)
+0.15.303.871 I common_perf_print:        eval time =   12007.55 ms /   117 runs   (  102.63 ms per token,     9.74 tokens per second)
+0.15.303.871 I common_perf_print:       total time =   12717.07 ms /   151 tokens
+0.15.303.872 I common_perf_print: unaccounted time =       5.44 ms /   0.0 %      (total - sampling - prompt eval - eval) / (total)
+0.15.303.873 I common_perf_print:    graphs reused =        116

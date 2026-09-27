@@ -1,0 +1,20 @@
+== Llama-3.2-1B-Instruct-Q4_0 tg128 NPU
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |  99 | HTP0         |           tg128 |         29.45 ± 0.04 |
+== Llama-3.2-1B-Instruct-Q4_0 tg128 GPU
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |  99 | GPUOpenCL    |           tg128 |         24.78 ± 0.30 |
+== Llama-3.2-1B-Instruct-Q4_0 tg128 CPU t4,6,8
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       4 | none         |           tg128 |         33.50 ± 0.33 |
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       6 | none         |           tg128 |         29.17 ± 0.11 |
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       8 | none         |           tg128 |         29.51 ± 0.03 |
+== Qwen3.5-4B-Q4_0-pure tg128 NPU
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | HTP0         |           tg128 |          8.01 ± 0.08 |
+== Qwen3.5-4B-Q4_0-pure tg128 GPU
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |  99 | GPUOpenCL    |           tg128 |          8.19 ± 0.26 |
+== Qwen3.5-4B-Q4_0-pure tg128 CPU t4,6,8
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |           tg128 |          9.75 ± 0.01 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       6 | none         |           tg128 |          8.51 ± 0.00 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       8 | none         |           tg128 |          8.26 ± 0.02 |
+== split NPU+GPU pp512 ts 1/1 and 2/1
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |  99 | HTP0/GPUOpenCL | 1.00/1.00    |           pp512 |        364.11 ± 4.45 |
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |  99 | HTP0/GPUOpenCL | 2.00/1.00    |           pp512 |        396.89 ± 0.70 |
+DONE

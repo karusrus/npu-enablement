@@ -1,0 +1,239 @@
+{
+ "execution_summary": {
+  "estimated_inference_time": 2019,
+  "estimated_inference_peak_memory": 168181760,
+  "first_load_time": 1205149,
+  "first_load_peak_memory": 371515392,
+  "warm_load_time": 120194,
+  "warm_load_peak_memory": 178028544,
+  "compile_time": 0,
+  "compile_peak_memory": 0,
+  "compile_memory_increase_range": [
+   0,
+   0
+  ],
+  "compile_memory_peak_range": [
+   0,
+   0
+  ],
+  "first_load_memory_increase_range": [
+   187289456,
+   194810096
+  ],
+  "first_load_memory_peak_range": [
+   251887616,
+   259408256
+  ],
+  "warm_load_memory_increase_range": [
+   0,
+   2530224
+  ],
+  "warm_load_memory_peak_range": [
+   290816,
+   77656304
+  ],
+  "inference_memory_increase_range": [
+   0,
+   0
+  ],
+  "inference_memory_peak_range": [
+   1585152,
+   77413344
+  ],
+  "all_compile_times": [],
+  "all_first_load_times": [
+   1205149
+  ],
+  "all_warm_load_times": [
+   120194
+  ],
+  "all_inference_times": [
+   2422,
+   2129,
+   2172,
+   2054,
+   2075,
+   2036,
+   2068,
+   2043,
+   2031,
+   2052,
+   2076,
+   2320,
+   2153,
+   2097,
+   2089,
+   2075,
+   2180,
+   2050,
+   2050,
+   2052,
+   2067,
+   2077,
+   2158,
+   2116,
+   2026,
+   2057,
+   2042,
+   2058,
+   2060,
+   2084,
+   2029,
+   2031,
+   2026,
+   2058,
+   2052,
+   2038,
+   2050,
+   2056,
+   2019,
+   2040,
+   2051,
+   2055,
+   2047,
+   2043,
+   2071,
+   2052,
+   2052,
+   2056,
+   2044,
+   2126,
+   2095,
+   2034,
+   2062,
+   2047,
+   2069,
+   2044,
+   2034,
+   2040,
+   2037,
+   2043,
+   2047,
+   2036,
+   2044,
+   2036,
+   2055,
+   2048,
+   2030,
+   2036,
+   2034,
+   2045,
+   2059,
+   2027,
+   2033,
+   2039,
+   2042,
+   2044,
+   2050,
+   2047,
+   2040,
+   2038,
+   2047,
+   2034,
+   2021,
+   2044,
+   2043,
+   2045,
+   2060,
+   2044,
+   2057,
+   2070,
+   2089,
+   2146,
+   2062,
+   2066,
+   2031,
+   2052,
+   2053,
+   2052,
+   2056,
+   2059
+  ]
+ },
+ "execution_detail": [
+  {
+   "name": "Input",
+   "type": "Input",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/MatMul_pre_reshape",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/MatMul",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 766049
+  },
+  {
+   "name": "/MatMul_2",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu_2",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 632933
+  },
+  {
+   "name": "/MatMul_4",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu_4",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 627363
+  },
+  {
+   "name": "/MatMul_6",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "/Relu_6",
+   "type": "/Relu",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 630820
+  },
+  {
+   "name": "/MatMul_6_post_reshape",
+   "type": "/MatMul",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 0
+  },
+  {
+   "name": "Output",
+   "type": "Output",
+   "compute_unit": "NPU",
+   "execution_time": 0,
+   "execution_cycles": 701231
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       2 | none         |           pp512 |        110.33 ± 0.02 |
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       4 | none         |           pp512 |        215.99 ± 0.19 |
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       6 | none         |           pp512 |        182.52 ± 0.35 |
+| llama 1B Q4_0                  | 729.75 MiB |     1.24 B | OpenCL,HTP |   0 |       8 | none         |           pp512 |        226.83 ± 0.64 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       2 | none         |           pp512 |         27.86 ± 0.00 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       4 | none         |           pp512 |         51.55 ± 0.20 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       6 | none         |           pp512 |         41.24 ± 0.92 |
+| qwen35 4B Q4_0                 |   2.21 GiB |     4.21 B | OpenCL,HTP |   0 |       8 | none         |           pp512 |         51.66 ± 0.29 |
+DONE

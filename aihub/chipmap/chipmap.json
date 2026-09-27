@@ -1,0 +1,234 @@
+[
+ {
+  "device": "Samsung Galaxy S21 (Family)",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-888",
+   "chipset:sm8350",
+   "hexagon:v68"
+  ],
+  "status": "FAILED",
+  "detected": "Detected Qualcomm SOC=SM8350. SOC Model=30, Hexagon arch=68, supports QNN=true, unsigned PDs=true, fp16=false, QNN flavor=default.",
+  "msg": "Failed to profile the model: Failed to call QnnModel_composeGraphsFromDlc: MODEL_GRAPH_ERROR."
+ },
+ {
+  "device": "Samsung Galaxy A73 5G",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-778g",
+   "chipset:sm7325",
+   "hexagon:v68"
+  ],
+  "status": "FAILED",
+  "detected": "Detected Qualcomm SOC=SM7325. SOC Model=35, Hexagon arch=68, supports QNN=true, unsigned PDs=true, fp16=false, QNN flavor=default.",
+  "msg": "Failed to profile the model: Failed to call QnnModel_composeGraphsFromDlc: MODEL_GRAPH_ERROR."
+ },
+ {
+  "device": "QCS8550 (Proxy)",
+  "attrs": [
+   "chipset:qualcomm-qcs8550-proxy",
+   "chipset:qualcomm-dragonwing-qcs8550-proxy",
+   "hexagon:v73"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8550. SOC Model=43, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Samsung Galaxy S22 (Family)",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8gen1",
+   "chipset:sm8450",
+   "hexagon:v69"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8450. SOC Model=36, Hexagon arch=69, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Samsung Galaxy S23 (Family)",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8gen2",
+   "chipset:sm8550",
+   "hexagon:v73"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8550. SOC Model=43, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Samsung Galaxy S24 (Family)",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8gen3",
+   "chipset:sm8650",
+   "hexagon:v75"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8650. SOC Model=57, Hexagon arch=75, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Samsung Galaxy S25",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8-elite-for-galaxy",
+   "chipset:sm8750-ac",
+   "hexagon:v79"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8750. SOC Model=69, Hexagon arch=79, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Samsung Galaxy S26",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8-elite-gen5-for-galaxy",
+   "chipset:sm8850-ad",
+   "hexagon:v81"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8850. SOC Model=87, Hexagon arch=81, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Snapdragon X Elite CRD",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-x-elite",
+   "chipset:sc8380xp",
+   "hexagon:v73"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SC8380XP. SOC Model=60, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Snapdragon X Plus 8-Core CRD",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-x-plus-8-core",
+   "chipset:sc8340xp",
+   "hexagon:v73"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SC8380XP. SOC Model=60, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Snapdragon X2 Elite CRD",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-x2-elite",
+   "chipset:sc8480xp",
+   "hexagon:v81"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SC8480XP. SOC Model=88, Hexagon arch=81, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Snapdragon 8 Elite QRD",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8-elite",
+   "chipset:sm8750",
+   "hexagon:v79"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8750. SOC Model=69, Hexagon arch=79, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Snapdragon 8 Elite Gen 5 QRD",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-8-elite-gen5",
+   "chipset:sm8850",
+   "hexagon:v81"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SM8850. SOC Model=87, Hexagon arch=81, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Snapdragon 7 Gen 4 QRD",
+  "attrs": [
+   "chipset:qualcomm-snapdragon-7gen4",
+   "chipset:sm7750",
+   "hexagon:v73"
+  ],
+  "status": "FAILED",
+  "detected": "Detected Qualcomm SOC=SM7750. SOC Model=86, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=false, QNN flavor=default.",
+  "msg": "Failed to profile the model: Failed to call QnnModel_composeGraphsFromDlc: MODEL_GRAPH_ERROR."
+ },
+ {
+  "device": "SA8295P ADP",
+  "attrs": [
+   "chipset:qualcomm-sa8295p",
+   "hexagon:v68"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SA8295. SOC Model=39, Hexagon arch=68, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=auto.",
+  "msg": ""
+ },
+ {
+  "device": "SA8775P ADP",
+  "attrs": [
+   "chipset:qualcomm-sa8775p",
+   "hexagon:v73"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SA8255. SOC Model=52, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=auto.",
+  "msg": ""
+ },
+ {
+  "device": "SA7255P ADP",
+  "attrs": [
+   "chipset:qualcomm-sa7255p",
+   "hexagon:v75"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=SA8620P. SOC Model=67, Hexagon arch=75, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=auto.",
+  "msg": ""
+ },
+ {
+  "device": "Dragonwing Q-6690 MTP",
+  "attrs": [
+   "chipset:qualcomm-qcm6690",
+   "chipset:qcm6690",
+   "chipset:qualcomm-dragonwing-q-6690",
+   "hexagon:v73"
+  ],
+  "status": "FAILED",
+  "detected": "Detected Qualcomm SOC=QCM6690. SOC Model=78, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=false, QNN flavor=default.",
+  "msg": "Failed to profile the model: Failed to call QnnModel_composeGraphsFromDlc: MODEL_GRAPH_ERROR."
+ },
+ {
+  "device": "Dragonwing RB3 Gen 2 Vision Kit",
+  "attrs": [
+   "chipset:qualcomm-qcs6490",
+   "chipset:qcs6490",
+   "chipset:qualcomm-dragonwing-qcs6490",
+   "hexagon:v68"
+  ],
+  "status": "FAILED",
+  "detected": "Detected Qualcomm SOC=QCS6490. SOC Model=93, Hexagon arch=68, supports QNN=true, unsigned PDs=true, fp16=false, QNN flavor=default.",
+  "msg": "Failed to profile the model: Failed to call QnnModel_composeGraphsFromDlc: MODEL_GRAPH_ERROR."
+ },
+ {
+  "device": "Dragonwing IQ-9075 EVK",
+  "attrs": [
+   "chipset:qualcomm-qcs9075",
+   "chipset:qcs9075",
+   "chipset:qualcomm-dragonwing-iq-9075",
+   "hexagon:v73"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=QCS9100. SOC Model=77, Hexagon arch=73, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ },
+ {
+  "device": "Arduino VENTUNO Q",
+  "attrs": [
+   "chipset:qualcomm-qcs8275",
+   "chipset:qcs8275",
+   "chipset:qualcomm-dragonwing-iq-8275",
+   "hexagon:v75"
+  ],
+  "status": "SUCCESS",
+  "detected": "Detected Qualcomm SOC=QCS8300. SOC Model=82, Hexagon arch=75, supports QNN=true, unsigned PDs=true, fp16=true, QNN flavor=default.",
+  "msg": ""
+ }
+]
