@@ -9,8 +9,9 @@ This work moves the math to **integer HMX**, which the chip does support. Result
 on the NPU is **2.4–2.9× faster than the best CPU configuration and 1.8–2× faster than the Adreno GPU**,
 with the same perplexity and byte-identical outputs.
 
-Code: branch [`hexagon-int-hmx`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx) in my llama.cpp fork
-(one commit on top of upstream `86a24a1`). Upstream discussion: ggml-org/llama.cpp#29473. Work in progress, not upstream.
+Code: branch [`hexagon-int-hmx`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx) in my llama.cpp fork,
+one commit ([`76074e0`](https://github.com/karusrus/llama.cpp/commit/76074e0cd08da129be7610c67b76b6a2b512a06b)) on top of upstream `86a24a1`
+([diff against master](https://github.com/ggml-org/llama.cpp/compare/master...karusrus:llama.cpp:hexagon-int-hmx)). Upstream discussion: ggml-org/llama.cpp#29473. Work in progress, not upstream.
 
 ## Results
 
