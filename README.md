@@ -6,11 +6,11 @@ based on the architecture version (v73+). Qualcomm's own runtime confirms it —
 SM7750 logs `Hexagon arch=73 ... fp16=false`.
 
 This work moves the math to **integer HMX**, which the chip does support. Result: prompt processing
-on the NPU is **2.4–2.9× faster than the best CPU configuration and 1.8–2× faster than the Adreno GPU**,
+on the NPU is **2.2–3.3× faster than the best CPU configuration and 1.4–2.3× faster than the Adreno GPU**,
 with the same perplexity and byte-identical outputs.
 
 Code: branch [`hexagon-int-hmx`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx) in my llama.cpp fork,
-one commit ([`76074e0`](https://github.com/karusrus/llama.cpp/commit/76074e0cd08da129be7610c67b76b6a2b512a06b)) on top of upstream `86a24a1`
+two commits ([`76074e0`](https://github.com/karusrus/llama.cpp/commit/76074e0cd08da129be7610c67b76b6a2b512a06b), [`4aa1a98`](https://github.com/karusrus/llama.cpp/commit/4aa1a98)) on top of upstream `86a24a1`
 ([diff against master](https://github.com/ggml-org/llama.cpp/compare/master...karusrus:llama.cpp:hexagon-int-hmx)). Upstream discussion: ggml-org/llama.cpp#29473. Work in progress, not upstream.
 
 ## Results
@@ -20,16 +20,16 @@ CPU = best of 2/4/6/8 threads. GPU = stock OpenCL backend (Adreno 722).
 
 | Model | NPU (this patch) | CPU | GPU | vs CPU | vs GPU |
 |---|---|---|---|---|---|
-| Llama-3.2-1B-Instruct Q4_0 | 547.5 | 226.8 | 307.2 | 2.41× | 1.78× |
-| Qwen3.5-4B Q4_0 (all layers q4_0) | 147.1 | 51.7 | 73.9 | 2.85× | 1.99× |
-| Qwen3.5-4B Q4_0 (unsloth, mixed quants) | 96.0 | 47.1 | 76.2 | 2.04× | 1.26× |
+| Llama-3.2-1B-Instruct Q4_0 | 550.6 | 226.8 | 307.2 | 2.43× | 1.79× |
+| Qwen3.5-4B Q4_0 (all layers q4_0) | 171.9 | 51.7 | 73.9 | 3.33× | 2.33× |
+| Qwen3.5-4B Q4_0 (unsloth, mixed quants) | 105.9 | 47.1 | 76.2 | 2.25× | 1.39× |
 
 Quality, Qwen3.5-4B pure Q4_0, wikitext-2, 20 × 512 tokens:
 
 | | Perplexity | Time |
 |---|---|---|
 | CPU | 10.8533 ± 0.424 | 4:02 |
-| NPU | 10.8354 ± 0.423 | 1:18 |
+| NPU | 10.8355 ± 0.423 | 1:08 |
 
 Greedy outputs on the NPU are byte-identical to the CPU for all three models.
 `test-backend-ops`: MUL_MAT q4_0 38/38, FLASH_ATTN_EXT 2583/2588 (5 long-context cases, kv 8K–16K, still fail).
@@ -43,6 +43,9 @@ Greedy outputs on the NPU are byte-identical to the CPU for all three models.
 - **Accumulation.** HMX runs the integer matmul. Two stores per K chunk (coarse + fine) are stitched
   on HVX into the exact 32-bit sum, then rescaled per row and column.
 - **Pipeline.** HMX computes tile *i* while HVX reduces tile *i−1* and converts weights for tile *i+1*.
+- **Gated DeltaNet (Qwen3.5).** The stock chunked GDN kernel needs FP16 HMX, so on this chip it falls back to a
+  token-by-token HVX path. The branch adds a chunked HVX path in f32: 8 tokens per pass over the state, state kept
+  transposed so every product is a vector AXPY, decay ratios in the log domain. GDN time 1.39 s -> 0.85 s per 512 tokens.
 - **Attention.** Q·Kᵀ and P·V both run on integer HMX. K is smoothed per channel, with the factor
   folded back into Q. Softmax runs on HVX in fp16, and the 1/sum factor is folded into the row scale.
 
