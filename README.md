@@ -10,7 +10,10 @@ on the NPU is **2.2–3.3× faster than the best CPU configuration and 1.4–2.3
 with the same perplexity and byte-identical outputs.
 
 Code: branch [`hexagon-int-hmx`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx) in my llama.cpp fork,
-two commits ([`76074e0`](https://github.com/karusrus/llama.cpp/commit/76074e0cd08da129be7610c67b76b6a2b512a06b), [`4aa1a98`](https://github.com/karusrus/llama.cpp/commit/4aa1a98)) on top of upstream `86a24a1`
+four commits on top of upstream `86a24a1`: integer HMX
+([`76074e0`](https://github.com/karusrus/llama.cpp/commit/76074e0cd08da129be7610c67b76b6a2b512a06b)), chunked HVX GDN
+([`4aa1a98`](https://github.com/karusrus/llama.cpp/commit/4aa1a98d2c0f6c7a7a9630c1e41c8bdf8310191a)), HMX FP16 auto-detection
+([`0f69bd6`](https://github.com/karusrus/llama.cpp/commit/0f69bd6)) and cleanup ([`ea11b8f`](https://github.com/karusrus/llama.cpp/commit/ea11b8f))
 ([diff against master](https://github.com/ggml-org/llama.cpp/compare/master...karusrus:llama.cpp:hexagon-int-hmx)). Upstream discussion: ggml-org/llama.cpp#29473. Work in progress, not upstream.
 
 ## Results
@@ -93,16 +96,16 @@ cmake --build build-snapdragon
 cmake --install build-snapdragon --prefix pkg-android/llama.cpp
 ```
 
-On the phone (SM7750):
+On the phone no settings are needed:
 
 ```
-GGML_HEXAGON_HMX_Q40_ONLY=1 GGML_HEXAGON_FA_SELECT=1 GGML_HEXAGON_GDN_SELECT=1 \
-  ./bin/llama-bench -m model.gguf -p 512 -n 0 -ngl 99 --device HTP0
+./bin/llama-bench -m model.gguf -p 512 -n 0 -ngl 99 --device HTP0
 ```
 
-- `GGML_HEXAGON_HMX_Q40_ONLY=1` sends only plain Q4_0 matmuls to HMX (they take the integer path); other types stay on HVX.
-- `GGML_HEXAGON_FA_SELECT=1`, `GGML_HEXAGON_GDN_SELECT=1` keep attention and gated delta net off the stock FP16 HMX
-  kernels; attention prefill then takes the integer HMX path.
+- At session start the backend runs one FP16 HMX tile and checks the result. On SM7750 it logs
+  `HMX FP16: no (integer HMX for Q4_0 matmul and attention)` and picks: integer HMX for Q4_0 matmuls and attention
+  prefill, HVX for other weight types and for gated delta net. On FP16-capable chips nothing changes.
+- `GGML_HEXAGON_HMX_FP16=0|1` forces the choice (1 on SM7750 reproduces the original garbage).
 - Use a model where all matmul weights are Q4_0 (`llama-quantize --pure ... Q4_0`) for the full speedup.
 
 ## Repo layout
