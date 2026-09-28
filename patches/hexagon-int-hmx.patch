@@ -1,7 +1,7 @@
-From 76074e0cd08da129be7610c67b76b6a2b512a06b Mon Sep 17 00:00:00 2001
+From d51e75640acfc07553ecda31392a7a87aaf5b801 Mon Sep 17 00:00:00 2001
 From: Ruslan Karymov <67752306+karusrus@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 20:23:34 +0200
-Subject: [PATCH 1/4] ggml-hexagon: integer HMX path for Q4_0 matmul and FA
+Subject: [PATCH 1/5] ggml-hexagon: integer HMX path for Q4_0 matmul and FA
  prefill on SoCs without FP16 HMX (SM7750)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
@@ -18,10 +18,10 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
  create mode 100644 ggml/src/ggml-hexagon/htp/hmxint-mm.h
 
 diff --git a/ggml/src/ggml-hexagon/ggml-hexagon.cpp b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
-index 581f07a..9d85f9d 100644
+index 521a97a..632b4b6 100644
 --- a/ggml/src/ggml-hexagon/ggml-hexagon.cpp
 +++ b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
-@@ -100,6 +100,7 @@ static bool   opt_dma64   = false;
+@@ -101,6 +101,7 @@ static bool   opt_dma64   = false;
  
  static int    opt_mm_select = 2; // 2 = HMX -> HVX -> CPU, 1 = HVX -> CPU, 0 = CPU (unsupported)
  static int    opt_fa_select = 2; // 2 = HMX -> HVX -> CPU, 1 = HVX -> CPU, 0 = CPU (unsupported)
@@ -29,7 +29,7 @@ index 581f07a..9d85f9d 100644
  static int    opt_gdn_select = 2; // 2 = HMX -> HVX, 1 = HVX, 0 = CPU (unsupported)
  static int    opt_ar_select = 2; // 2 = fused ALLREDUCE+ADD (DMA, default), 1 = unfused ALLREDUCE (DMA), 0 = fallback to CPY+FENCE
  
-@@ -4937,6 +4938,7 @@ static void ggml_hexagon_precompute_matmul_params_impl(
+@@ -4945,6 +4946,7 @@ static void ggml_hexagon_precompute_matmul_params_impl(
  
      // Check HMX eligibility and try precomputing HMX parameters
      bool hmx_enabled = (sess->n_hmx > 0) && (opt_mm_select >= 2);
@@ -37,7 +37,7 @@ index 581f07a..9d85f9d 100644
      if (hmx_enabled && ggml_hexagon_matmul_is_hmx_eligible(src0, src1, dst, ne01_padded, is_matmul_id, is_batched)) {
          if (ggml_hexagon_precompute_hmx_mm_params(sess, src0, src1, dst, wtype, ne00_padded, ne01_padded, ne02, ne11, ne12, ne11_padded, is_matmul_id, is_batched, src2_size, vtcm_budget, kparams)) {
              goto finalize;
-@@ -5508,7 +5510,7 @@ static void ggml_hexagon_precompute_fused_mmnx_params(
+@@ -5625,7 +5627,7 @@ static void ggml_hexagon_precompute_fused_mmnx_params(
      const size_t vtcm_budget = sess->vtcm_size;
      const bool is_batched = (ne02 * ne03 > 1 || ne12 * ne13 > 1);
  
@@ -46,7 +46,7 @@ index 581f07a..9d85f9d 100644
      if (hmx_enabled && ggml_hexagon_matmul_is_hmx_eligible(src0, src1, nullptr, ne01_padded, false, is_batched)) {
          if (ggml_hexagon_precompute_hmx_mm_params(sess, src0, src1, nullptr, wtype, ne00_padded, ne01_padded, ne02, ne11, ne12, ne11_padded, false, is_batched, 0, vtcm_budget, kparams)) {
              kparams->n_weights = n_weights;
-@@ -7990,6 +7992,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
+@@ -8203,6 +8205,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
      const char * str_mm_select = getenv("GGML_HEXAGON_MM_SELECT");
      const char * str_fa_select = getenv("GGML_HEXAGON_FA_SELECT");
      const char * str_gdn_select = getenv("GGML_HEXAGON_GDN_SELECT");
@@ -54,7 +54,7 @@ index 581f07a..9d85f9d 100644
      const char * str_ar_select = getenv("GGML_HEXAGON_AR_SELECT");
      const char * str_ndev     = getenv("GGML_HEXAGON_NDEV");
      const char * str_arch     = getenv("GGML_HEXAGON_ARCH");
-@@ -8043,6 +8046,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
+@@ -8256,6 +8259,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
      opt_mm_select = str_mm_select ? atoi(str_mm_select)                   : opt_mm_select;
      opt_fa_select = str_fa_select ? atoi(str_fa_select)                   : opt_fa_select;
      opt_gdn_select = str_gdn_select ? atoi(str_gdn_select)                 : opt_gdn_select;
@@ -1238,10 +1238,10 @@ index 727dc28..b0a2669 100644
 2.54.0
 
 
-From 4aa1a98d2c0f6c7a7a9630c1e41c8bdf8310191a Mon Sep 17 00:00:00 2001
+From 31d6da6a8ca38fe12558a5acb643b210130fb5e2 Mon Sep 17 00:00:00 2001
 From: Ruslan Karymov <67752306+karusrus@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 21:37:45 +0200
-Subject: [PATCH 2/4] ggml-hexagon: chunked HVX gated delta net prefill (8
+Subject: [PATCH 2/5] ggml-hexagon: chunked HVX gated delta net prefill (8
  tokens per state pass, transposed state); vector residual add in integer HMX
  reduce
 
@@ -1559,10 +1559,10 @@ index 6227de4..33bcdc8 100644
 2.54.0
 
 
-From 0f69bd61da08beffe55d3eca3509f11819e854ba Mon Sep 17 00:00:00 2001
+From ce092eed86071aaf86f4936044e4510660d48bf3 Mon Sep 17 00:00:00 2001
 From: Ruslan Karymov <67752306+karusrus@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 22:33:05 +0200
-Subject: [PATCH 3/4] ggml-hexagon: probe HMX FP16 at session start; without it
+Subject: [PATCH 3/5] ggml-hexagon: probe HMX FP16 at session start; without it
  use integer HMX for Q4_0 and HVX for other types, FA and GDN (no env vars
  needed)
 
@@ -1577,10 +1577,10 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
  6 files changed, 77 insertions(+), 11 deletions(-)
 
 diff --git a/ggml/src/ggml-hexagon/ggml-hexagon.cpp b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
-index 9d85f9d..e517988 100644
+index 632b4b6..1cf71e3 100644
 --- a/ggml/src/ggml-hexagon/ggml-hexagon.cpp
 +++ b/ggml/src/ggml-hexagon/ggml-hexagon.cpp
-@@ -100,7 +100,7 @@ static bool   opt_dma64   = false;
+@@ -101,7 +101,7 @@ static bool   opt_dma64   = false;
  
  static int    opt_mm_select = 2; // 2 = HMX -> HVX -> CPU, 1 = HVX -> CPU, 0 = CPU (unsupported)
  static int    opt_fa_select = 2; // 2 = HMX -> HVX -> CPU, 1 = HVX -> CPU, 0 = CPU (unsupported)
@@ -1589,7 +1589,7 @@ index 9d85f9d..e517988 100644
  static int    opt_gdn_select = 2; // 2 = HMX -> HVX, 1 = HVX, 0 = CPU (unsupported)
  static int    opt_ar_select = 2; // 2 = fused ALLREDUCE+ADD (DMA, default), 1 = unfused ALLREDUCE (DMA), 0 = fallback to CPY+FENCE
  
-@@ -482,6 +482,7 @@ struct ggml_hexagon_session {
+@@ -490,6 +490,7 @@ struct ggml_hexagon_session {
      uint32_t n_threads   = 0;
      uint32_t n_hvx       = 0;
      uint32_t n_hmx       = 0;
@@ -1597,7 +1597,7 @@ index 9d85f9d..e517988 100644
      uint64_t vtcm_size   = 0;
      size_t   max_vmem    = 0;
      uint32_t fence_seq   = 0;
-@@ -4229,6 +4230,16 @@ void ggml_hexagon_session::allocate(const ggml_hexagon_device_config & config) n
+@@ -4237,6 +4238,16 @@ void ggml_hexagon_session::allocate(const ggml_hexagon_device_config & config) n
      }
      this->valid_iface = true;
  
@@ -1614,7 +1614,7 @@ index 9d85f9d..e517988 100644
      if (opt_profile) {
          htp_iface_pmu_conf pmu_conf{};
          std::copy(opt_pmu_evt.begin(), opt_pmu_evt.end(), pmu_conf.events);
-@@ -4339,7 +4350,7 @@ static bool ggml_hexagon_flash_attn_is_hmx_eligible(
+@@ -4347,7 +4358,7 @@ static bool ggml_hexagon_flash_attn_is_hmx_eligible(
          return false;
      }
  
@@ -1623,7 +1623,7 @@ index 9d85f9d..e517988 100644
          return false;
      }
  
-@@ -4597,7 +4608,7 @@ static bool ggml_hexagon_supported_gated_delta_net(const struct ggml_hexagon_ses
+@@ -4605,7 +4616,7 @@ static bool ggml_hexagon_supported_gated_delta_net(const struct ggml_hexagon_ses
      const uint32_t n_threads  = (std::min)((uint32_t) sess->n_threads, total_rows);
  
      const bool can_use_hmx = (opt_gdn_select >= 2) &&
@@ -1632,7 +1632,7 @@ index 9d85f9d..e517988 100644
                               (S_v % 64 == 0) &&
                               (n_tokens >= HTP_GDN_MIN_TOKENS) &&
                               (g->ne[0] == 1) &&
-@@ -4938,7 +4949,7 @@ static void ggml_hexagon_precompute_matmul_params_impl(
+@@ -4946,7 +4957,7 @@ static void ggml_hexagon_precompute_matmul_params_impl(
  
      // Check HMX eligibility and try precomputing HMX parameters
      bool hmx_enabled = (sess->n_hmx > 0) && (opt_mm_select >= 2);
@@ -1641,7 +1641,7 @@ index 9d85f9d..e517988 100644
      if (hmx_enabled && ggml_hexagon_matmul_is_hmx_eligible(src0, src1, dst, ne01_padded, is_matmul_id, is_batched)) {
          if (ggml_hexagon_precompute_hmx_mm_params(sess, src0, src1, dst, wtype, ne00_padded, ne01_padded, ne02, ne11, ne12, ne11_padded, is_matmul_id, is_batched, src2_size, vtcm_budget, kparams)) {
              goto finalize;
-@@ -5431,7 +5442,7 @@ static void ggml_hexagon_precompute_gated_delta_net_params(
+@@ -5502,7 +5513,7 @@ static void ggml_hexagon_precompute_gated_delta_net_params(
      const uint32_t n_threads  = (std::min)((uint32_t) sess->n_threads, total_rows);
  
      const bool can_use_hmx = (opt_gdn_select >= 2) &&
@@ -1650,7 +1650,7 @@ index 9d85f9d..e517988 100644
                               (S_v % 64 == 0) &&
                               (n_tokens >= HTP_GDN_MIN_TOKENS) &&
                               (g->ne[0] == 1) &&
-@@ -5510,7 +5521,7 @@ static void ggml_hexagon_precompute_fused_mmnx_params(
+@@ -5627,7 +5638,7 @@ static void ggml_hexagon_precompute_fused_mmnx_params(
      const size_t vtcm_budget = sess->vtcm_size;
      const bool is_batched = (ne02 * ne03 > 1 || ne12 * ne13 > 1);
  
@@ -1659,7 +1659,7 @@ index 9d85f9d..e517988 100644
      if (hmx_enabled && ggml_hexagon_matmul_is_hmx_eligible(src0, src1, nullptr, ne01_padded, false, is_batched)) {
          if (ggml_hexagon_precompute_hmx_mm_params(sess, src0, src1, nullptr, wtype, ne00_padded, ne01_padded, ne02, ne11, ne12, ne11_padded, false, is_batched, 0, vtcm_budget, kparams)) {
              kparams->n_weights = n_weights;
-@@ -7992,7 +8003,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
+@@ -8205,7 +8216,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
      const char * str_mm_select = getenv("GGML_HEXAGON_MM_SELECT");
      const char * str_fa_select = getenv("GGML_HEXAGON_FA_SELECT");
      const char * str_gdn_select = getenv("GGML_HEXAGON_GDN_SELECT");
@@ -1668,7 +1668,7 @@ index 9d85f9d..e517988 100644
      const char * str_ar_select = getenv("GGML_HEXAGON_AR_SELECT");
      const char * str_ndev     = getenv("GGML_HEXAGON_NDEV");
      const char * str_arch     = getenv("GGML_HEXAGON_ARCH");
-@@ -8046,7 +8057,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
+@@ -8259,7 +8270,7 @@ static void ggml_hexagon_init(ggml_backend_reg * reg) {
      opt_mm_select = str_mm_select ? atoi(str_mm_select)                   : opt_mm_select;
      opt_fa_select = str_fa_select ? atoi(str_fa_select)                   : opt_fa_select;
      opt_gdn_select = str_gdn_select ? atoi(str_gdn_select)                 : opt_gdn_select;
@@ -1691,7 +1691,7 @@ index 5c2b126..e74e27e 100644
          if (r != HTP_STATUS_NO_SUPPORT) return r;
      }
 diff --git a/ggml/src/ggml-hexagon/htp/htp-ctx.h b/ggml/src/ggml-hexagon/htp/htp-ctx.h
-index 814feef..4bf7beb 100644
+index f9f682b..d63d56e 100644
 --- a/ggml/src/ggml-hexagon/htp/htp-ctx.h
 +++ b/ggml/src/ggml-hexagon/htp/htp-ctx.h
 @@ -98,6 +98,7 @@ struct htp_context {
@@ -1715,7 +1715,7 @@ index b46e252..264fb1d 100644
  
  #endif /* HTP_IDL */
 diff --git a/ggml/src/ggml-hexagon/htp/main.c b/ggml/src/ggml-hexagon/htp/main.c
-index b4b352b..26eb993 100644
+index 6d1c47d..0dd88e7 100644
 --- a/ggml/src/ggml-hexagon/htp/main.c
 +++ b/ggml/src/ggml-hexagon/htp/main.c
 @@ -35,6 +35,7 @@
@@ -1818,10 +1818,10 @@ index b0a2669..b1f9fb0 100644
 2.54.0
 
 
-From ea11b8fd41da2c3716b7a83d006a7d4261cd72e7 Mon Sep 17 00:00:00 2001
+From 4fc27c1064ccd5e456eddabe57dab981d7f6d9ee Mon Sep 17 00:00:00 2001
 From: Ruslan Karymov <67752306+karusrus@users.noreply.github.com>
 Date: Sun, 27 Sep 2026 23:27:35 +0200
-Subject: [PATCH 4/4] ggml-hexagon: integer HMX cleanup (single group per
+Subject: [PATCH 4/5] ggml-hexagon: integer HMX cleanup (single group per
  k-chunk only, no timers/logs, drop unused helpers)
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
@@ -2483,6 +2483,250 @@ index b1f9fb0..499cb0f 100644
          for (uint32_t p = 0; p < n_weights; p++) {
              const struct htp_tensor * restrict src_w = octx->src[p];
              const struct htp_tensor * restrict dst   = octx->dsts[p];
+-- 
+2.54.0
+
+
+From ff61a077954f6cb43fa2ac501767b585fc6008b6 Mon Sep 17 00:00:00 2001
+From: Ruslan Karymov <ruslan@Ruslans-MacBook-Air.local>
+Date: Mon, 28 Sep 2026 13:40:03 +0200
+Subject: [PATCH 5/5] ggml-hexagon: copy short rows through VTCM with vgather
+ (CONCAT dim 0, CPY)
+
+Decode of Qwen3.5 concatenates the conv state with one token (rows of 4 f32)
+and copies the conv state view back (rows of 3 f32 at stride 4). Both paths
+moved these 8192 short rows with per-row DMA or per-row copies and waited on
+memory for every row.
+
+Short rows now go through VTCM: one DMA brings the source span in, vgather
+places every word at its output position, one DMA writes the rows out.
+
+SM7750, Qwen3.5-4B Q4_0, per token: CONCAT 5.6 -> 0.66 ms, CPY 2.6 -> 0.52 ms,
+tg64 8.31 -> 8.99 t/s. test-backend-ops CONCAT 48/48, CPY 136/136; output
+unchanged.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ ggml/src/ggml-hexagon/htp/concat-ops.c      |  11 ++
+ ggml/src/ggml-hexagon/htp/cpy-ops.c         |   9 ++
+ ggml/src/ggml-hexagon/htp/hvx-gather-rows.h | 152 ++++++++++++++++++++
+ 3 files changed, 172 insertions(+)
+ create mode 100644 ggml/src/ggml-hexagon/htp/hvx-gather-rows.h
+
+diff --git a/ggml/src/ggml-hexagon/htp/concat-ops.c b/ggml/src/ggml-hexagon/htp/concat-ops.c
+index 382a946..046d27b 100644
+--- a/ggml/src/ggml-hexagon/htp/concat-ops.c
++++ b/ggml/src/ggml-hexagon/htp/concat-ops.c
+@@ -10,6 +10,7 @@
+ #include "htp-vtcm.h"
+ #include "hvx-utils.h"
+ #include "hex-fastdiv.h"
++#include "hvx-gather-rows.h"
+ #include <string.h>
+ 
+ struct htp_concat_context {
+@@ -317,6 +318,16 @@ int op_concat(struct htp_ops_context * octx) {
+         return HTP_STATUS_OK;
+     }
+ 
++    // dim 0 with short rows (conv state + one token): the paths below move a few elements per row and wait on every transfer
++    if (dim == 0 && dst->type == HTP_TYPE_F32 && src0->type == HTP_TYPE_F32 && src1->type == HTP_TYPE_F32 &&
++        dst->ne[0] <= 16 && dst->nb[0] == 4 && dst->nb[1] == dst->ne[0] * 4 && src0->nb[0] == 4 &&
++        src0->ne[1] == dst->ne[1] && src1->ne[1] == dst->ne[1] &&
++        dst->ne[2] == 1 && dst->ne[3] == 1 && src0->ne[2] == 1 && src0->ne[3] == 1 && src1->ne[2] == 1 && src1->ne[3] == 1 &&
++        !htp_tensor_is_extended(src0) && !htp_tensor_is_extended(src1) && !htp_tensor_is_extended(dst) &&
++        hvx_gather_rows_run(octx, src0, src0->ne[0], src1, src1->ne[0], dst->data, dst->ne[1])) {
++        return HTP_STATUS_OK;
++    }
++
+     uint32_t n_threads = octx->n_threads;
+     struct htp_concat_context cctx;
+     cctx.octx = octx;
+diff --git a/ggml/src/ggml-hexagon/htp/cpy-ops.c b/ggml/src/ggml-hexagon/htp/cpy-ops.c
+index aef3c04..7b1ac55 100644
+--- a/ggml/src/ggml-hexagon/htp/cpy-ops.c
++++ b/ggml/src/ggml-hexagon/htp/cpy-ops.c
+@@ -17,6 +17,7 @@
+ #include "hvx-utils.h"
+ #include "htp-tensor.h"
+ #include "htp-fence.h"
++#include "hvx-gather-rows.h"
+ 
+ struct htp_copy_context {
+     struct htp_ops_context * octx;
+@@ -585,6 +586,14 @@ static int exec_cpy(struct htp_ops_context * octx, bool * use_dma) {
+             return HTP_STATUS_OK;
+         }
+ 
++        // short f32 source rows into a contiguous dst (conv state view): per-row copies wait on memory for every row
++        if (src0->type == HTP_TYPE_F32 && dst_is_contiguous && nb00 == 4 && ne00 <= 16 && ne02 == 1 && ne03 == 1 &&
++            !htp_tensor_is_extended(src0) && !htp_tensor_is_extended(dst) &&
++            hvx_gather_rows_run(octx, src0, ne00, NULL, 0, dst->data, ne01)) {
++            *use_dma = true;
++            return HTP_STATUS_OK;
++        }
++
+         ct.div_ne0            = init_fastdiv_values(ne0);
+         ct.div_ne1_ne0        = init_fastdiv_values(ne1 * ne0);
+         ct.div_ne2_ne1_ne0    = init_fastdiv_values(ne2 * ne1 * ne0);
+diff --git a/ggml/src/ggml-hexagon/htp/hvx-gather-rows.h b/ggml/src/ggml-hexagon/htp/hvx-gather-rows.h
+new file mode 100644
+index 0000000..456a263
+--- /dev/null
++++ b/ggml/src/ggml-hexagon/htp/hvx-gather-rows.h
+@@ -0,0 +1,152 @@
++#pragma once
++
++// Copy many short f32 rows (a few elements each) through VTCM: DMA the source spans in, rearrange with vgather, DMA the result out.
++// Per-row DMA or scalar copies of such rows wait on memory for every row.
++// dst row i = a[i][0..na) followed by b[i][0..nb) (b column k at b->data + k*b->nb[0]); dst rows are contiguous.
++
++#include "hex-common.h"
++#include "hvx-utils.h"
++#include "dma-queue.h"
++#include "htp-ctx.h"
++#include "htp-ops.h"
++#include "htp-tensor.h"
++
++struct hvx_gather_rows_job {
++    struct htp_ops_context * octx;
++    const struct htp_tensor * a;
++    const struct htp_tensor * b;
++    dma_addr_t dst;
++    uint32_t na, nb, ne;           // words per row: from a, from b, total
++    uint32_t rows;
++    uint32_t rg, vg;               // offsets repeat every rg rows = vg vectors
++    uint32_t rows_per_thread;
++    uint32_t nr_max;               // rows per VTCM chunk
++    uint32_t v1, span1;            // region layout: a rows at 0, b column k at v1 + k*span1
++    uint32_t region_size, out_off, slice;
++};
++
++static inline void hvx_gather_rows_dma(dma_queue * q, dma_addr_t dst, dma_addr_t src, size_t size) {
++    if (!dma_queue_push(q, dma_make_data(dst, src), size, size, size, 1)) {
++        dma_queue_flush(q);
++        dma_queue_push(q, dma_make_data(dst, src), size, size, size, 1);
++    }
++}
++
++static void hvx_gather_rows_thread(unsigned int nth, unsigned int ith, void * data) {
++    const struct hvx_gather_rows_job * j = (const struct hvx_gather_rows_job *) data;
++    const struct htp_tensor * a = j->a;
++    const struct htp_tensor * b = j->b;
++
++    const uint32_t r_beg = MIN(ith * j->rows_per_thread, j->rows);
++    const uint32_t r_end = MIN(r_beg + j->rows_per_thread, j->rows);
++    if (r_beg >= r_end) {
++        return;
++    }
++
++    uint8_t * base   = j->octx->ctx->vtcm_base + ith * j->slice;
++    HVX_Vector * tab = (HVX_Vector *) base;
++    HVX_Vector * inc = tab + j->vg;
++    HVX_Vector * cur = inc + j->vg;
++    uint8_t * sync   = (uint8_t *) (cur + j->vg);
++    uint8_t * region = sync + 128;
++    uint8_t * out    = region + j->out_off;
++
++    // byte offsets of output word e = k*32 + lane, for one period
++    for (uint32_t k = 0; k < j->vg; k++) {
++        int32_t * t = (int32_t *) (tab + k);
++        int32_t * s = (int32_t *) (inc + k);
++        for (uint32_t lane = 0; lane < 32; lane++) {
++            const uint32_t e   = k * 32 + lane;
++            const uint32_t row = e / j->ne;
++            const uint32_t col = e - row * j->ne;
++            if (col < j->na) {
++                t[lane] = row * a->nb[1] + col * 4;
++                s[lane] = j->rg * a->nb[1];
++            } else {
++                t[lane] = j->v1 + (col - j->na) * j->span1 + row * b->nb[1];
++                s[lane] = j->rg * b->nb[1];
++            }
++        }
++    }
++
++    dma_queue * q = j->octx->ctx->dma[ith];
++
++    for (uint32_t r = r_beg; r < r_end; r += j->nr_max) {
++        const uint32_t nr = MIN(j->nr_max, r_end - r);
++
++        hvx_gather_rows_dma(q, (dma_addr_t) region, a->data + r * a->nb[1], (nr - 1) * a->nb[1] + j->na * 4);
++        for (uint32_t k = 0; k < j->nb; k++) {
++            hvx_gather_rows_dma(q, (dma_addr_t) (region + j->v1 + k * j->span1), b->data + k * b->nb[0] + r * b->nb[1], (nr - 1) * b->nb[1] + 4);
++        }
++        dma_queue_flush(q);
++
++        for (uint32_t k = 0; k < j->vg; k++) {
++            cur[k] = tab[k];
++        }
++
++        const uint32_t nvec = (nr * j->ne + 31) / 32;
++        uint32_t k = 0;
++        for (uint32_t v = 0; v < nvec; v++) {
++            Q6_vgather_ARMVw((HVX_Vector *) (out + v * 128), (size_t) region, j->region_size, cur[k]);
++            cur[k] = Q6_Vw_vadd_VwVw(cur[k], inc[k]);
++            if (++k == j->vg) {
++                k = 0;
++            }
++        }
++
++        // vector loads wait for the gathers; DMA does not
++        HVX_Vector acc = Q6_V_vzero();
++        for (uint32_t v = 0; v < nvec; v++) {
++            acc = Q6_V_vor_VV(acc, *(const HVX_Vector *) (out + v * 128));
++        }
++        *(HVX_Vector *) sync = acc;
++
++        hvx_gather_rows_dma(q, j->dst + r * j->ne * 4, (dma_addr_t) out, nr * j->ne * 4);
++        dma_queue_flush(q);
++    }
++}
++
++// Returns false when the shape does not fit; the caller keeps its own path then.
++static inline bool hvx_gather_rows_run(struct htp_ops_context * octx, const struct htp_tensor * a, uint32_t na,
++                                       const struct htp_tensor * b, uint32_t nb, dma_addr_t dst, uint32_t rows) {
++    const uint32_t ne = na + nb;
++    if (ne == 0 || ne > 32 || rows == 0 || octx->ctx->mdev.count > 1 ||
++        (a->nb[1] % 4) != 0 || (b && ((b->nb[0] % 4) != 0 || (b->nb[1] % 4) != 0))) {
++        return false;
++    }
++
++    struct hvx_gather_rows_job j;
++    j.octx = octx;
++    j.a    = a;
++    j.b    = b;
++    j.dst  = dst;
++    j.na   = na;
++    j.nb   = nb;
++    j.ne   = ne;
++    j.rows = rows;
++    j.vg   = ne / hex_gcd_u32(ne, 32);
++    j.rg   = j.vg * 32 / ne;
++
++    const uint32_t n_threads = octx->n_threads;
++    j.slice = (uint32_t) (octx->ctx->vtcm_size / n_threads) & ~127u;
++    j.rows_per_thread = hex_round_up((rows + n_threads - 1) / n_threads, j.rg);
++
++    const uint32_t fixed   = (3 * j.vg + 1) * 128 + 3 * 128;
++    const uint32_t per_row = a->nb[1] + (b ? nb * b->nb[1] : 0) + ne * 4;
++    if (j.slice <= fixed + per_row * j.rg) {
++        return false;
++    }
++    j.nr_max = MIN((j.slice - fixed) / per_row, j.rows_per_thread);
++    j.nr_max = j.nr_max / j.rg * j.rg;
++    if (j.nr_max == 0) {
++        return false;
++    }
++
++    j.v1          = hex_round_up((j.nr_max - 1) * a->nb[1] + na * 4, 128);
++    j.span1       = b ? (j.nr_max - 1) * b->nb[1] + 4 : 0;
++    j.region_size = j.v1 + nb * j.span1;
++    j.out_off     = hex_round_up(j.region_size, 128);
++
++    work_queue_run(octx->ctx->work_queue, hvx_gather_rows_thread, &j, n_threads);
++    return true;
++}
 -- 
 2.54.0
 

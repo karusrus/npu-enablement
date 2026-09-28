@@ -25,3 +25,16 @@ Earlier builds (older numbers in some logs here): v1 pp512 Qwen 118, Llama 456; 
 From 0f69bd6 (HMX FP16 probe): on SM7750 without any env vars MUL_MAT 759/759 (all weight types), GATED_DELTA_NET 36/36,
 FLASH_ATTN_EXT 2583/2588, PPL 10.8355, outputs identical to CPU. After cleanup (ea11b8f), interleaved A/B pp512 on
 Qwen3.5-4B pure Q4_0: 172.0 before vs 173.1 after (3 runs each).
+
+## v1.4 (28.09.2026, branch hexagon-int-hmx-pr, ff61a07 on a97cce8)
+
+Short-row CONCAT (dim 0) and CPY go through VTCM with vgather. Qwen3.5-4B Q4_0 all layers q4_0, `-ngl 99 --device HTP0 -t 4`:
+
+- tg64: 8.31 -> 8.99 t/s. Llama-3.2-1B tg64 30.1 t/s (no conv state, unchanged within noise).
+- Per decode token (GGML_HEXAGON_PROFILE=1): CONCAT 5598 -> 656 us, CPY 2557 -> 518 us (24 layers).
+- pp512 171.5 (unchanged). CPU on the same build: pp512 51.7 / 41.5 / 52.4 at -t 4/6/8 (NPU 172.0, 3.29x); tg64 9.68 (-t 4).
+- test-backend-ops -b HTP0: CONCAT 48/48, CPY 136/136, GATED_DELTA_NET 36/36, SSM_CONV 45/45, MUL_MAT 759/759.
+- Greedy 48 tokens after a 1442-token wikitext prompt: byte-identical to the CPU and to the NPU before the change.
+
+Decode is memory-bound: with NPU decode running in the background, CPU decode drops from 9.7 to 4.1 t/s and NPU decode to ~7.5 t/s.
+

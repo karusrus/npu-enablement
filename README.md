@@ -9,12 +9,15 @@ This work moves the math to **integer HMX**, which the chip does support. Result
 on the NPU is **2.2–3.3× faster than the best CPU configuration and 1.4–2.3× faster than the Adreno GPU**,
 with the same perplexity and byte-identical outputs.
 
-Code: branch [`hexagon-int-hmx`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx) in my llama.cpp fork,
-four commits on top of upstream `86a24a1`: integer HMX
-([`76074e0`](https://github.com/karusrus/llama.cpp/commit/76074e0cd08da129be7610c67b76b6a2b512a06b)), chunked HVX GDN
-([`4aa1a98`](https://github.com/karusrus/llama.cpp/commit/4aa1a98d2c0f6c7a7a9630c1e41c8bdf8310191a)), HMX FP16 auto-detection
-([`0f69bd6`](https://github.com/karusrus/llama.cpp/commit/0f69bd6)) and cleanup ([`ea11b8f`](https://github.com/karusrus/llama.cpp/commit/ea11b8f))
-([diff against master](https://github.com/ggml-org/llama.cpp/compare/master...karusrus:llama.cpp:hexagon-int-hmx)). Upstream discussion: ggml-org/llama.cpp#29473. Work in progress, not upstream.
+Code: branch [`hexagon-int-hmx-pr`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx-pr) in my llama.cpp fork,
+five commits on top of upstream `a97cce8`: integer HMX for Q4_0 matmul and attention prefill
+([`d51e756`](https://github.com/karusrus/llama.cpp/commit/d51e756)), chunked HVX gated delta net
+([`31d6da6`](https://github.com/karusrus/llama.cpp/commit/31d6da6)), HMX FP16 auto-detection
+([`ce092ee`](https://github.com/karusrus/llama.cpp/commit/ce092ee)), cleanup ([`4fc27c1`](https://github.com/karusrus/llama.cpp/commit/4fc27c1))
+and v1.4, faster conv-state copies for decode ([`ff61a07`](https://github.com/karusrus/llama.cpp/commit/ff61a077954f6cb43fa2ac501767b585fc6008b6))
+([diff against master](https://github.com/ggml-org/llama.cpp/compare/master...karusrus:llama.cpp:hexagon-int-hmx-pr)).
+The earlier branch [`hexagon-int-hmx`](https://github.com/karusrus/llama.cpp/tree/hexagon-int-hmx) (on `86a24a1`, without v1.4) is the one linked in the issue.
+Upstream discussion: ggml-org/llama.cpp#29473. Work in progress, not upstream.
 
 ## Results
 
@@ -67,10 +70,28 @@ Qualcomm AI Hub (QNN 2.50) reports HMX FP16 per chipset:
 On v73 the backend enables FP16 HMX, so 7 Gen 4 and QCM6690 are exposed. 7 Gen 4 is confirmed on a real
 device; QCM6690 is untested.
 
+## Decode (v1.4)
+
+Decode on this phone is limited by memory bandwidth, not compute. NPU matmuls read weights at ~27 GB/s, the CPU at ~23 GB/s.
+Running CPU and NPU decode at the same time gives only ~15% more total throughput than either alone, so splitting
+decode between them does not pay off.
+
+On the NPU, Qwen3.5 decode also lost ~8 ms per token in two small ops: CONCAT of the conv state with the new token and
+the CPY of the conv state back. They moved 8192 rows of 3-4 floats one row at a time and waited on memory for every row.
+v1.4 moves such short rows through VTCM: one DMA in, `vgather` to place every word, one DMA out.
+
+| Qwen3.5-4B Q4_0, per token | before | v1.4 |
+|---|---|---|
+| CONCAT (conv state) | 5.6 ms | 0.66 ms |
+| CPY (conv state) | 2.6 ms | 0.52 ms |
+| tg64, NPU | 8.31 t/s | 8.99 t/s |
+
+The CPU is still a bit faster at decode: 9.4-9.7 t/s (Qwen3.5-4B), 33.5 t/s (Llama-3.2-1B, NPU 30.1).
+Tests: CONCAT 48/48, CPY 136/136, GATED_DELTA_NET 36/36, MUL_MAT 759/759; output unchanged; pp512 unchanged (171.5).
+
 ## Limits
 
-- Prefill only. Decode (tg128, t/s) is memory-bound and the CPU stays fastest:
-  Llama-3.2-1B — CPU 33.5, NPU 29.5, GPU 24.8; Qwen3.5-4B — CPU 9.8, GPU 8.2, NPU 8.0.
+- HMX runs prefill only. Decode stays on HVX and the CPU is still slightly faster (see above).
 - Splitting one model's layers across NPU + GPU is slower than the NPU alone: 364–397 vs 456 t/s (same build) on
   Llama-3.2-1B pp512. Layers run one after another, so the speed lands between the two devices.
 - Small batches are slower than the CPU: 8 tokens take 336 ms on the NPU vs 203 ms on the CPU (Qwen3.5-4B).
@@ -85,7 +106,7 @@ device; QCM6690 is untested.
 Same as upstream llama.cpp for Snapdragon (docs/backend/snapdragon), on the branch:
 
 ```
-git clone -b hexagon-int-hmx https://github.com/karusrus/llama.cpp
+git clone -b hexagon-int-hmx-pr https://github.com/karusrus/llama.cpp
 cd llama.cpp
 docker run -it --rm -u $(id -u):$(id -g) --volume $(pwd):/workspace --platform linux/amd64 \
   ghcr.io/snapdragon-toolchain/arm64-android:v0.7
@@ -110,5 +131,5 @@ On the phone no settings are needed:
 
 ## Repo layout
 
-`patches/` — the same change as the branch, as a patch (MIT, like llama.cpp) · `src/` — the integer HMX kernels ·
+`patches/` — the five commits of the branch on top of `a97cce8`, as a patch (MIT, like llama.cpp) · `src/` — the integer HMX kernels ·
 `aihub/` — FP16 chip map and QNN ceiling scripts · `scripts/` — benchmark scripts run on the phone · `data/` — raw logs.
